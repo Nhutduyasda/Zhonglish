@@ -23,3 +23,22 @@ Bộ tài liệu này là **single source of truth** cho AI Agent khi vibe codin
 ## Core principle
 
 > Beginner first. One clear action per screen. Every learning session should feel achievable in 3–5 minutes.
+
+## Chạy local
+
+```bash
+npm install
+npm run dev
+```
+
+Mở `http://localhost:3000`. Trang gốc hiện là trang kiểm tra nền tảng; landing page sẽ được xây ở Phase 1.
+
+## Kiểm tra
+
+```bash
+npm run lint
+npm run typecheck
+npm run build
+```
+
+Các biến môi trường dự kiến cho các phase sau nằm trong `.env.example`; Phase 0 không cần cấu hình chúng.

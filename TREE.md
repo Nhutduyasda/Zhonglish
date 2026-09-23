@@ -4,10 +4,30 @@
 Zhonglish/
 ├── .gitignore
 ├── .env.example
+├── package.json
+├── package-lock.json
+├── next.config.ts
+├── tsconfig.json
+├── eslint.config.mjs
+├── postcss.config.mjs
+├── components.json
 ├── README.md
 ├── 00_START_HERE.md
 ├── AGENTS.md
 ├── TREE.md
+├── public/
+│   └── .gitkeep
+├── src/
+│   ├── app/
+│   │   ├── layout.tsx
+│   │   ├── globals.css
+│   │   └── (marketing)/
+│   │       ├── layout.tsx
+│   │       └── page.tsx
+│   ├── components/ui/
+│   │   └── button.tsx
+│   └── lib/
+│       └── utils.ts
 ├── docs/
 │   ├── README.md
 │   ├── 00-product/

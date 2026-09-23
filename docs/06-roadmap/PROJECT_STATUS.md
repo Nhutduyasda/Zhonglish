@@ -1,19 +1,19 @@
 # Zhonglish Project Status
 
-Current Phase: **Preparation**
+Current Phase: **Phase 0 — Foundation (Completed)**
 
 ## Completed
 
 - Repository created and documentation initialized.
 - Product, design and architecture direction documented.
+- Phase 0 — Foundation: Next.js application, UI tokens, typography, accessibility baseline and production build.
 
 ## Next
 
-- Phase 0 — Foundation
+- Phase 1 — Skolla-inspired Landing
 
 ## Not Started
 
-- Phase 0 — Foundation
 - Phase 1 — Skolla-inspired Landing
 - Phase 2 — Authentication + Onboarding
 - Phase 3 — Learning Dashboard

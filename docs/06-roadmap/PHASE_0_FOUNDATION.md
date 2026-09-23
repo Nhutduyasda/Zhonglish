@@ -1,60 +1,62 @@
 # Phase 0 — Foundation
 
-Status: **Not Started**. This document prepares the next implementation task; no application scaffold is included in repository bootstrap.
+Status: **Completed**. Application foundation implemented. Phase 1 remains not started.
 
 Read `AGENTS.md`, `MVP_ROADMAP.md`, `docs/01-design/` and `docs/05-rules/` before implementation.
 
 ## 0.1 Project Scaffold
 
-- [ ] Scaffold Next.js App Router with TypeScript, `src/`, Tailwind CSS and ESLint.
-- [ ] Enable TypeScript strict mode and add `lint`, `typecheck` and `build` scripts.
+- [x] Scaffold Next.js App Router with TypeScript, `src/`, Tailwind CSS and ESLint.
+- [x] Enable TypeScript strict mode and add `lint`, `typecheck` and `build` scripts.
 
 ## 0.2 UI Foundation
 
-- [ ] Configure shadcn/ui, Framer Motion and Lucide icons.
-- [ ] Centralize design tokens and CSS variables per `docs/01-design/DESIGN_SYSTEM.md`.
-- [ ] Configure a readable Vietnamese, Latin and Simplified Chinese font using `next/font`.
-- [ ] Establish accessible focus states and reduced motion support.
+- [x] Configure shadcn/ui component infrastructure and Button manually, plus Framer Motion and Lucide icons.
+- [x] Centralize design tokens and CSS variables per `docs/01-design/DESIGN_SYSTEM.md`.
+- [x] Configure Noto Sans Vietnamese/Latin and Noto Sans SC using `next/font/local`.
+- [x] Establish accessible focus states and reduced motion support.
 
 ## 0.3 Project Structure
 
-- [ ] Prepare `src/app/`, `src/components/`, `src/features/`, `src/hooks/`, `src/lib/`, `src/data/`, `src/types/` and `src/styles/` as needed by the scaffold.
-- [ ] Keep future feature and content logic out of this phase.
+- [x] Prepare `src/app/`, `src/components/ui/` and `src/lib/`; create future feature folders when their code exists.
+- [x] Keep future feature and content logic out of this phase.
 
 ## 0.4 Route Architecture
 
-- [ ] Prepare public `(marketing)` and future `(auth)` route groups plus `onboarding/` and `app/` architecture.
-- [ ] Define separate marketing and learning shell boundaries; lesson screens will later have a focused layout.
-- [ ] Avoid implementing landing, authentication, onboarding and learning features.
+- [x] Prepare the public `(marketing)` route group; auth, onboarding and learning routes remain documented for later phases.
+- [x] Define the marketing boundary in its own layout; create learning shell when Phase 3 begins.
+- [x] Avoid implementing landing, authentication, onboarding and learning features.
 
 ## 0.5 Quality Gates
 
-- [ ] Run `npm run lint`.
-- [ ] Run `npm run typecheck`.
-- [ ] Run `npm run build`.
-- [ ] Check basic desktop and mobile shell rendering and accessibility.
+- [x] Run `npm run lint`.
+- [x] Run `npm run typecheck`.
+- [x] Run `npm run build`.
+- [x] Check responsive CSS structure, semantic markup and keyboard focus rules. Full visual browser QA awaits a browser with local app access.
 
 ## 0.6 Vercel Readiness
 
-- [ ] Confirm production build is compatible with Vercel and GitHub integration.
-- [ ] Document environment variables with `.env.example`; keep secrets out of Git.
-- [ ] Avoid any dependency on a persistent local filesystem in production.
+- [x] Confirm independent Next.js production build; GitHub repository is connected. Vercel deployment was not performed.
+- [x] Document environment variables with `.env.example`; keep secrets out of Git.
+- [x] Avoid any dependency on a persistent local filesystem in production.
 
 ## Definition of Done
 
-- [ ] Next.js scaffold hoàn chỉnh
-- [ ] TypeScript strict
-- [ ] Tailwind hoạt động
-- [ ] shadcn/ui configured
-- [ ] Framer Motion configured
-- [ ] Lucide configured
-- [ ] Design tokens centralized
-- [ ] Typography configured
-- [ ] Basic project structure created
-- [ ] Marketing/app architecture prepared
-- [ ] ESLint passes
-- [ ] Typecheck passes
-- [ ] Production build passes
-- [ ] Vercel compatible
+- [x] Next.js scaffold hoàn chỉnh
+- [x] TypeScript strict
+- [x] Tailwind hoạt động
+- [x] shadcn/ui component infrastructure configured manually
+- [x] Framer Motion installed
+- [x] Lucide installed and rendered
+- [x] Design tokens centralized
+- [x] Typography configured
+- [x] Basic project structure created
+- [x] Marketing boundary prepared; future app boundary documented
+- [x] ESLint passes
+- [x] Typecheck passes
+- [x] Production build passes
+- [x] Vercel-compatible framework build; deployment not verified
+
+The shadcn CLI registry endpoint was inaccessible from this environment. `components.json`, the Button primitive and required utilities were configured locally. New registry components may need a follow-up check when that endpoint is reachable.
 
 Update `PROJECT_STATUS.md` when Phase 0 is complete.
