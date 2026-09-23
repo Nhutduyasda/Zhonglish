@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
 import { Volume2, VolumeX } from "lucide-react";
 import type { ListeningExercise } from "@/features/lesson/types";
+import { useSpeech } from "@/hooks/use-speech";
 
 type ListeningProps = {
   exercise: ListeningExercise;
@@ -17,46 +17,16 @@ export function Listening({
   isSubmitted,
   onSelect,
 }: ListeningProps) {
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [hasPlayedOnce, setHasPlayedOnce] = useState(false);
-  const [speechSupported, setSpeechSupported] = useState(true);
-
-  // Cancel speech on unmount or when exercise changes
-  useEffect(() => {
-    return () => {
-      if (typeof window !== "undefined" && "speechSynthesis" in window) {
-        window.speechSynthesis.cancel();
-      }
-    };
-  }, [exercise.id]);
-
-  const playAudio = useCallback(() => {
-    if (typeof window === "undefined" || !("speechSynthesis" in window)) {
-      setSpeechSupported(false);
-      return;
-    }
-
-    try {
-      window.speechSynthesis.cancel(); // cancel any active utterance
-      const utterance = new SpeechSynthesisUtterance(exercise.speechText);
-      utterance.lang = exercise.speechLang;
-      utterance.rate = 0.85; // slightly slower for language learners
-
-      utterance.onstart = () => setIsPlaying(true);
-      utterance.onend = () => {
-        setIsPlaying(false);
-        setHasPlayedOnce(true);
-      };
-      utterance.onerror = () => {
-        setIsPlaying(false);
-        setHasPlayedOnce(true);
-      };
-
-      window.speechSynthesis.speak(utterance);
-    } catch {
-      setSpeechSupported(false);
-    }
-  }, [exercise.speechText, exercise.speechLang]);
+  const {
+    speak: playAudio,
+    isPlaying,
+    hasPlayedOnce,
+    isSupported: speechSupported,
+  } = useSpeech({
+    text: exercise.speechText,
+    lang: exercise.speechLang,
+    rate: 0.85,
+  });
 
   return (
     <div className="exercise-layout">

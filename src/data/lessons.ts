@@ -1,5 +1,6 @@
 import { courses, type LearningLanguage } from "./curriculum";
 import type { Lesson } from "@/features/lesson/types";
+import { CHINESE_VOCABULARY } from "./chinese-vocabulary";
 
 export const lessons: Record<string, Lesson> = {
   "english-survival-1": {
@@ -270,6 +271,95 @@ export const lessons: Record<string, Lesson> = {
         options: ["Tôi tên là An", "Bạn tên là An", "Chào bạn An", "An là bạn tôi"],
         correctAnswer: "Tôi tên là An",
         explanation: "“我叫 An” dịch sang tiếng Việt là “Tôi tên là An”."
+      },
+    ],
+  },
+
+  "chinese-daily-1": {
+    id: "chinese-daily-1",
+    language: "chinese",
+    stageId: "daily",
+    order: 3,
+    estimatedMinutes: 5,
+    title: "Gia đình và sinh hoạt",
+    description: "Học nhận biết chữ Hán, pinyin và phát âm về các thành viên gia đình và từ sinh hoạt hằng ngày.",
+    topicsPracticed: ["家 · Gia đình", "爸爸 · Bố", "妈妈 · Mẹ", "吃 / 喝 · Ăn / Uống", "水 · Nước"],
+    exercises: [
+      {
+        id: "zh3-1-hanzi",
+        type: "hanzi_choice",
+        prompt: "Chọn chữ Hán có nghĩa là “Gia đình / Nhà”:",
+        meaning: "Gia đình / Nhà",
+        pinyin: "jiā",
+        term: CHINESE_VOCABULARY["jia"],
+        options: ["家", "吃", "水", "人"],
+        correctAnswer: "家",
+        explanation: "“家” (jiā) mang ý nghĩa là “Nhà / Gia đình”.",
+      },
+      {
+        id: "zh3-2-pinyin",
+        type: "pinyin_choice",
+        prompt: "Chọn phiên âm pinyin đúng cho chữ “爸爸” (Bố / Cha):",
+        hanzi: "爸爸",
+        meaning: "Bố / Cha",
+        term: CHINESE_VOCABULARY["ba-ba"],
+        options: ["bà ba", "mā ma", "nǐ hǎo", "xiè xie"],
+        correctAnswer: "bà ba",
+        explanation: "“爸爸” có phiên âm pinyin chuẩn là “bà ba”.",
+      },
+      {
+        id: "zh3-3-hanzi",
+        type: "hanzi_choice",
+        prompt: "Chọn chữ Hán có nghĩa là “Mẹ”:",
+        meaning: "Mẹ",
+        pinyin: "mā ma",
+        term: CHINESE_VOCABULARY["ma-ma"],
+        options: ["妈妈", "爸爸", "家", "我"],
+        correctAnswer: "妈妈",
+        explanation: "“妈妈” (mā ma) có nghĩa là “Mẹ”.",
+      },
+      {
+        id: "zh3-4-lis",
+        type: "listening",
+        prompt: "Nghe phát âm và chọn chữ Hán tương ứng:",
+        speechText: "吃",
+        speechLang: "zh-CN",
+        fallbackTextAlternative: "Gợi ý: Từ mang nghĩa “Ăn” (phiên âm: chī).",
+        options: ["吃 (chī)", "喝 (hē)", "家 (jiā)", "水 (shuǐ)"],
+        correctAnswer: "吃 (chī)",
+        explanation: "“吃” (chī) có nghĩa là “Ăn”.",
+      },
+      {
+        id: "zh3-5-match",
+        type: "matching",
+        prompt: "Ghép các chữ Hán với nghĩa tiếng Việt tương ứng:",
+        pairs: [
+          { id: "zh3-p1", left: "家", right: "Gia đình / Nhà" },
+          { id: "zh3-p2", left: "爸爸", right: "Bố" },
+          { id: "zh3-p3", left: "妈妈", right: "Mẹ" },
+          { id: "zh3-p4", left: "吃", right: "Ăn" },
+        ],
+        explanation: "Các từ vựng cơ bản về gia đình và sinh hoạt: 家 (Nhà), 爸爸 (Bố), 妈妈 (Mẹ), 吃 (Ăn).",
+      },
+      {
+        id: "zh3-6-input",
+        type: "text_input",
+        prompt: "Nhập pinyin của chữ “水” (Nước):",
+        placeholder: "Ví dụ: shui hoặc shuǐ",
+        acceptedAnswers: ["shui", "shuǐ"],
+        displayAnswer: "shuǐ (hoặc shui)",
+        explanation: "“水” có pinyin là “shuǐ” (thanh 3), có nghĩa là “Nước”.",
+      },
+      {
+        id: "zh3-7-pinyin",
+        type: "pinyin_choice",
+        prompt: "Chọn phiên âm pinyin đúng cho chữ “喝” (Uống):",
+        hanzi: "喝",
+        meaning: "Uống",
+        term: CHINESE_VOCABULARY["he"],
+        options: ["hē", "chī", "shuǐ", "fàn"],
+        correctAnswer: "hē",
+        explanation: "“喝” (hē) có nghĩa là “Uống” (ví dụ: 喝水 · uống nước).",
       },
     ],
   },

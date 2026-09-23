@@ -5,6 +5,8 @@ import type {
   MatchingExercise,
   MultipleChoiceExercise,
   TextInputExercise,
+  HanziChoiceExercise,
+  PinyinChoiceExercise,
 } from "./types";
 
 /**
@@ -86,6 +88,34 @@ export function evaluateListening(
   };
 }
 
+export function evaluateHanziChoice(
+  exercise: HanziChoiceExercise,
+  selectedAnswer: string,
+): EvaluationResult {
+  const isCorrect = selectedAnswer === exercise.correctAnswer;
+  const display = exercise.pinyin
+    ? `${exercise.correctAnswer} (${exercise.pinyin})`
+    : exercise.correctAnswer;
+
+  return {
+    isCorrect,
+    correctAnswerDisplay: display,
+    explanation: exercise.explanation,
+  };
+}
+
+export function evaluatePinyinChoice(
+  exercise: PinyinChoiceExercise,
+  selectedAnswer: string,
+): EvaluationResult {
+  const isCorrect = selectedAnswer === exercise.correctAnswer;
+  return {
+    isCorrect,
+    correctAnswerDisplay: `${exercise.hanzi} → ${exercise.correctAnswer}`,
+    explanation: exercise.explanation,
+  };
+}
+
 export function evaluateExercise(
   exercise: Exercise,
   userSubmission: unknown,
@@ -110,6 +140,16 @@ export function evaluateExercise(
       );
     case "listening":
       return evaluateListening(
+        exercise,
+        typeof userSubmission === "string" ? userSubmission : "",
+      );
+    case "hanzi_choice":
+      return evaluateHanziChoice(
+        exercise,
+        typeof userSubmission === "string" ? userSubmission : "",
+      );
+    case "pinyin_choice":
+      return evaluatePinyinChoice(
         exercise,
         typeof userSubmission === "string" ? userSubmission : "",
       );

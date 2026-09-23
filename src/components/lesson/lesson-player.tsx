@@ -45,6 +45,8 @@ export function LessonPlayer({ lesson }: LessonPlayerProps) {
     switch (currentExercise.type) {
       case "multiple_choice":
       case "listening":
+      case "hanzi_choice":
+      case "pinyin_choice":
         return typeof currentAnswer === "string" && currentAnswer.length > 0;
       case "text_input":
         return typeof currentAnswer === "string" && currentAnswer.trim().length > 0;

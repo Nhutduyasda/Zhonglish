@@ -1,10 +1,20 @@
 import type { LearningLanguage } from "@/data/curriculum";
 
+export type ChineseTerm = {
+  id: string;
+  hanzi: string;
+  pinyin: string;
+  meaning: string;
+  speechText: string;
+};
+
 export type ExerciseType =
   | "multiple_choice"
   | "matching"
   | "listening"
-  | "text_input";
+  | "text_input"
+  | "hanzi_choice"
+  | "pinyin_choice";
 
 export type BaseExercise = {
   id: string;
@@ -46,11 +56,31 @@ export type TextInputExercise = BaseExercise & {
   displayAnswer: string;
 };
 
+export type HanziChoiceExercise = BaseExercise & {
+  type: "hanzi_choice";
+  meaning: string;
+  pinyin?: string;
+  options: string[];
+  correctAnswer: string;
+  term?: ChineseTerm;
+};
+
+export type PinyinChoiceExercise = BaseExercise & {
+  type: "pinyin_choice";
+  hanzi: string;
+  meaning?: string;
+  options: string[];
+  correctAnswer: string;
+  term?: ChineseTerm;
+};
+
 export type Exercise =
   | MultipleChoiceExercise
   | MatchingExercise
   | ListeningExercise
-  | TextInputExercise;
+  | TextInputExercise
+  | HanziChoiceExercise
+  | PinyinChoiceExercise;
 
 export type Lesson = {
   id: string;

@@ -46,12 +46,32 @@ Zhonglish/
 │   │       └── faq.tsx
 │   │   ├── auth/
 │   │   │   └── auth-form.tsx
-│   │   └── onboarding/
-│   │       └── onboarding-flow.tsx
+│   │   ├── onboarding/
+│   │   │   └── onboarding-flow.tsx
+│   │   └── lesson/
+│   │       ├── lesson-player.tsx
+│   │       ├── speech-button.tsx
+│   │       ├── chinese-term-card.tsx
+│   │       └── exercises/
+│   │           ├── multiple-choice.tsx
+│   │           ├── text-input.tsx
+│   │           ├── matching.tsx
+│   │           ├── listening.tsx
+│   │           ├── hanzi-choice.tsx
+│   │           └── pinyin-choice.tsx
 │   ├── data/
+│   │   ├── curriculum.ts
+│   │   ├── lessons.ts
+│   │   ├── chinese-vocabulary.ts
 │   │   └── marketing.ts
-│   ├── features/onboarding/
-│   │   └── draft.ts
+│   ├── hooks/
+│   │   └── use-speech.ts
+│   ├── features/
+│   │   ├── onboarding/
+│   │   │   └── draft.ts
+│   │   └── lesson/
+│   │       ├── types.ts
+│   │       └── evaluation.ts
 │   └── lib/
 │       ├── utils.ts
 │       └── supabase/
@@ -101,6 +121,7 @@ Zhonglish/
 │   │   ├── PHASE_1_LANDING.md
 │   │   ├── PHASE_2_AUTH_ONBOARDING.md
 │   │   ├── PHASE_4_1_LEARNING_PROGRESS.md
+│   │   ├── PHASE_5_CHINESE_FOUNDATION.md
 │   │   ├── PROJECT_STATUS.md
 │   │   └── FUTURE_BACKLOG.md
 │   └── 07-references/

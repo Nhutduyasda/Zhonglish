@@ -78,14 +78,15 @@ RLS: Authenticated users can only `SELECT` their own progress rows. Insertion/up
 
 RLS: Authenticated users can only `SELECT` their own activity rows. Insertion is managed through `record_lesson_completion`.
 
-## Atomic Function (Phase 4.1)
-- `public.record_lesson_completion(p_user_id, p_lesson_id, p_accuracy, p_learning_minutes)`:
+## Atomic Function (Phase 4.1 implemented RPC)
+- `public.record_lesson_completion(p_lesson_id text, p_language text, p_stage_id text, p_correct_count integer, p_total_exercises integer, p_accuracy integer, p_learning_minutes integer)`:
   - `SECURITY DEFINER`, `search_path = ''`
-  - Validates `auth.uid() = p_user_id`
-  - Upserts `lesson_progress` (calculating `completion_count`, `best_accuracy`)
+  - Validates authenticated user via `v_user_id := auth.uid()`
+  - Validates `p_language in ('english', 'chinese')`
+  - Upserts `public.lesson_progress` (calculating `completion_count`, `best_accuracy`)
   - Determines `is_first_completion` and awards 10 XP on first completion or 0 XP on replay
-  - Inserts activity log entry into `learning_activity`
-  - Returns `jsonb` with `{ success, is_first_completion, xp_awarded, learning_minutes }`
+  - Inserts activity log entry into `public.learning_activity`
+  - Returns `json` with `{ is_first_completion, xp_awarded, learning_minutes }`
 
 ## UserStats
 - userId
