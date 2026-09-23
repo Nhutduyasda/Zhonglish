@@ -20,7 +20,7 @@ Phase 2 uses `auth.users` for credentials and email; there is no duplicate passw
 - onboarding_completed: boolean
 - created_at, updated_at: timestamp with time zone
 
-RLS permits each authenticated user to select, insert and update only their own row. See `supabase/migrations/0001_create_profiles.sql`.
+RLS permits each authenticated user to select, insert and update only their own row. See `supabase/migrations/20260923060231_create_profiles.sql`.
 
 ## Course
 - id
@@ -108,3 +108,7 @@ RLS: Authenticated users can only `SELECT` their own activity rows. Insertion is
 - vocabularyItemId
 - strength
 - nextReviewAt
+
+## Phase 5.1 pending deployment
+
+The remote database currently has the Phase 4.1 tables and RPC but not the corresponding migration history. The public `record_lesson_completion` is executable by `authenticated` and can be forged; this must be removed before Phase 6. The prepared migration adds `learning_activity.request_id` with a unique per-user retry index and `record_trusted_lesson_completion`, executable only by `service_role`. The server validates the authenticated user, canonical lesson and score before invoking it. The new RPC has been added to production, while the application cutover and old RPC revocation are pending; see `docs/06-roadmap/PHASE_5_1_PRODUCTION_HARDENING.md`.

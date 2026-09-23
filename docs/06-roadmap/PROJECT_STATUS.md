@@ -1,6 +1,6 @@
 # Zhonglish Project Status
 
-Current Phase: **Phase 5 — Chinese Foundation (Completed)**
+Current Phase: **Phase 5.1 — Production Hardening (Partial, not deployed)**
 
 ## Completed
 
@@ -16,14 +16,11 @@ Current Phase: **Phase 5 — Chinese Foundation (Completed)**
 
 ## Next
 
-- Apply `supabase/migrations/0003_learning_progress.sql` to remote Supabase DB (if not already applied).
-- Phase 6 — Gamification (Streak expansion, milestone badges, celebration feedback).
+- Finish [Phase 5.1 production hardening](PHASE_5_1_PRODUCTION_HARDENING.md): deploy the prepared server code, revoke the old public completion RPC, then verify production E2E. Migration history was reconciled and the new RPC was added in production.
+- Phase 6 — Gamification only after the Phase 5.1 release gate passes.
 
 ## Not Started
 
-- Phase 6 — Gamification
-- Phase 7 — Persistence + Review
-- Phase 8 — Polish
 - Phase 6 — Gamification
 - Phase 7 — Persistence + Review
 - Phase 8 — Polish

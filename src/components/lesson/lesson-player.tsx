@@ -35,6 +35,7 @@ export function LessonPlayer({ lesson }: LessonPlayerProps) {
   const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "saved" | "error">("idle");
   const [saveErrorMessage, setSaveErrorMessage] = useState<string | null>(null);
   const [completionResult, setCompletionResult] = useState<LessonCompletionResult | null>(null);
+  const [requestId, setRequestId] = useState(() => crypto.randomUUID());
 
   const currentExercise = lesson.exercises[currentIndex];
   const totalExercises = lesson.exercises.length;
@@ -97,6 +98,7 @@ export function LessonPlayer({ lesson }: LessonPlayerProps) {
           body: JSON.stringify({
             lessonId: lesson.id,
             submissions,
+            requestId,
           }),
         });
 
@@ -119,7 +121,7 @@ export function LessonPlayer({ lesson }: LessonPlayerProps) {
         setSaveStatus("error");
       }
     },
-    [lesson.id]
+    [lesson.id, requestId]
   );
 
   // Proceed to next exercise or complete lesson
@@ -152,6 +154,7 @@ export function LessonPlayer({ lesson }: LessonPlayerProps) {
 
   // Restart lesson in-place
   const handleRestart = () => {
+    setRequestId(crypto.randomUUID());
     setCurrentIndex(0);
     setCurrentAnswer(null);
     setIsSubmitted(false);

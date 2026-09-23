@@ -20,7 +20,7 @@ Prior to this phase:
 - Mobile breakpoint (`<= 640px`): text is hidden via `.learning-nav-home-text { display: none; }`, preserving the icon button with `aria-label="Về trang chủ"`.
 
 ### Issue 2: Real Progress Persistence & Dashboard Dynamic Stats
-- **Database Schema (`supabase/migrations/0003_learning_progress.sql`)**:
+- **Database Schema (`supabase/migrations/20260923092415_learning_progress_history_reconciled.sql`)**:
   - `public.lesson_progress`: Tracks `user_id`, `lesson_id`, `best_accuracy`, `completion_count`, `first_completed_at`, `last_completed_at`.
   - `public.learning_activity`: Append-only activity log tracking `user_id`, `lesson_id`, `learning_minutes`, `xp_awarded`, `completed_at`.
   - Row Level Security (RLS) enabled on both tables; authenticated users can only `SELECT` their own records.
@@ -57,12 +57,12 @@ Prior to this phase:
 ## 2. Supabase Migration Execution Instructions
 
 The migration file is located at:
-`supabase/migrations/0003_learning_progress.sql`
+`supabase/migrations/20260923092415_learning_progress_history_reconciled.sql`
 
 If you are applying migrations manually in the Supabase Dashboard:
 1. Log in to [Supabase Console](https://supabase.com/dashboard).
 2. Open your project -> **SQL Editor**.
-3. Copy and run the contents of `supabase/migrations/0003_learning_progress.sql`.
+3. The production schema already exists and its migration history was reconciled in Phase 5.1. Do not reapply this migration to production.
 4. Verify the creation of `public.lesson_progress`, `public.learning_activity`, and the `public.record_lesson_completion` function.
 
 ---

@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/server";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
 import { getUserProfile } from "@/lib/supabase/profile";
 import { getLessonById } from "@/data/lessons";
 import { evaluateExercise } from "@/features/lesson/evaluation";
+import { createAdminClient } from "@/lib/supabase/admin";
 import type { ExerciseSubmission } from "@/features/lesson/types";
 
 export async function POST(request: Request) {
@@ -36,10 +36,15 @@ export async function POST(request: Request) {
     );
   }
 
-  const { lessonId, submissions } = body as {
+  const { lessonId, submissions, requestId } = body as {
     lessonId: string;
     submissions?: unknown[];
+    requestId?: unknown;
   };
+
+  if (typeof requestId !== "string" || !/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(requestId)) {
+    return NextResponse.json({ error: "Mã lưu bài học không hợp lệ." }, { status: 400 });
+  }
 
   const lesson = getLessonById(lessonId);
   if (!lesson) {
@@ -50,7 +55,7 @@ export async function POST(request: Request) {
   }
 
   const { user, profile } = await getUserProfile();
-  if (!user || !profile) {
+  if (!user || !profile || !profile.onboarding_completed) {
     return NextResponse.json(
       { error: "Vui lòng đăng nhập." },
       { status: 401 }
@@ -73,6 +78,10 @@ export async function POST(request: Request) {
     );
   }
 
+  if (submissions.length !== lesson.exercises.length || submissions.length > 100) {
+    return NextResponse.json({ error: "Bài làm chưa đầy đủ." }, { status: 400 });
+  }
+
   // Map submissions by exerciseId for safe lookup
   const submissionMap = new Map<string, unknown>();
   for (const item of submissions) {
@@ -83,8 +92,15 @@ export async function POST(request: Request) {
       typeof (item as ExerciseSubmission).exerciseId === "string"
     ) {
       const sub = item as ExerciseSubmission;
+      if (submissionMap.has(sub.exerciseId)) {
+        return NextResponse.json({ error: "Bài làm bị trùng câu hỏi." }, { status: 400 });
+      }
       submissionMap.set(sub.exerciseId, sub.answer);
     }
+  }
+
+  if (lesson.exercises.some((exercise) => !submissionMap.has(exercise.id))) {
+    return NextResponse.json({ error: "Bài làm chưa đầy đủ." }, { status: 400 });
   }
 
   // Server-side re-evaluation: never trust client score
@@ -103,9 +119,12 @@ export async function POST(request: Request) {
     totalExercises > 0 ? Math.round((correctCount / totalExercises) * 100) : 0;
 
   // Execute atomic completion RPC on Supabase
-  const supabase = await createClient();
+  if (!process.env.SUPABASE_SERVICE_ROLE_KEY) {
+    return NextResponse.json({ error: "Chưa cấu hình máy chủ lưu tiến độ." }, { status: 503 });
+  }
+  const supabase = createAdminClient();
   const { data: rpcResult, error: rpcError } = await supabase.rpc(
-    "record_lesson_completion",
+    "record_trusted_lesson_completion",
     {
       p_lesson_id: lesson.id,
       p_language: lesson.language,
@@ -114,6 +133,8 @@ export async function POST(request: Request) {
       p_total_exercises: totalExercises,
       p_accuracy: accuracy,
       p_learning_minutes: lesson.estimatedMinutes,
+      p_user_id: user.id,
+      p_request_id: requestId,
     }
   );
 
@@ -129,10 +150,8 @@ export async function POST(request: Request) {
     return NextResponse.json(
       {
         error: isMissingFunctionOrTable
-          ? "Cơ sở dữ liệu Supabase chưa được cập nhật bảng/hàm tiến độ. Vui lòng chạy file migration 'supabase/migrations/0003_learning_progress.sql' trên Supabase SQL Editor."
-          : `Lỗi cơ sở dữ liệu: ${rpcError.message || "Chưa thể lưu tiến độ học."}`,
-        details: rpcError.message,
-        code: rpcError.code,
+          ? "Máy chủ chưa được cập nhật cấu trúc lưu tiến độ. Vui lòng liên hệ quản trị viên."
+          : "Chưa thể lưu tiến độ học. Vui lòng thử lại.",
       },
       { status: 500 }
     );
