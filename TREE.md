@@ -1,4 +1,4 @@
-# Documentation Tree
+# Repository Tree
 
 ```text
 Zhonglish/
@@ -24,8 +24,17 @@ Zhonglish/
 │   │   └── (marketing)/
 │   │       ├── layout.tsx
 │   │       └── page.tsx
-│   ├── components/ui/
-│   │   └── button.tsx
+│   ├── components/
+│   │   ├── ui/
+│   │   │   └── button.tsx
+│   │   └── marketing/
+│   │       ├── header.tsx
+│   │       ├── hero.tsx
+│   │       ├── sections.tsx
+│   │       ├── language-experience.tsx
+│   │       └── faq.tsx
+│   ├── data/
+│   │   └── marketing.ts
 │   └── lib/
 │       └── utils.ts
 ├── docs/
@@ -65,6 +74,7 @@ Zhonglish/
 │   ├── 06-roadmap/
 │   │   ├── MVP_ROADMAP.md
 │   │   ├── PHASE_0_FOUNDATION.md
+│   │   ├── PHASE_1_LANDING.md
 │   │   ├── PROJECT_STATUS.md
 │   │   └── FUTURE_BACKLOG.md
 │   └── 07-references/

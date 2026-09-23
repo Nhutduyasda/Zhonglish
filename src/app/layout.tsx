@@ -19,8 +19,8 @@ const chinese = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Zhonglish",
-  description: "English and Chinese learning for beginners.",
+  title: "Zhonglish — Học English & Chinese từ con số 0",
+  description: "Học tiếng Anh và tiếng Trung qua những bài học ngắn, trực quan và dễ hiểu dành cho người mới bắt đầu.",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
