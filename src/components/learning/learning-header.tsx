@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { LogOut } from "lucide-react";
+import { LogOut, Home } from "lucide-react";
 import type { LearningLanguage } from "@/data/curriculum";
 
 type LearningHeaderProps = {
@@ -20,7 +20,7 @@ export function LearningHeader({
   return (
     <header className="learning-header">
       <div className="learning-header-inner">
-        {/* Brand */}
+        {/* Brand & Language Group */}
         <div className="learning-header-brand-group">
           <Link
             href="/app"
@@ -46,8 +46,18 @@ export function LearningHeader({
           </div>
         </div>
 
-        {/* User Account & Actions */}
+        {/* User Account, Home Navigation & Actions */}
         <div className="learning-header-user-group">
+          {/* Link back to Landing page */}
+          <Link
+            href="/"
+            className="learning-nav-home"
+            aria-label="Về trang chủ"
+          >
+            <Home size={16} aria-hidden="true" />
+            <span className="learning-nav-home-text">Trang chủ</span>
+          </Link>
+
           {userEmail && (
             <span className="learning-user-email" title={userEmail}>
               {userEmail}

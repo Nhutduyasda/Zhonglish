@@ -6,6 +6,7 @@ import type {
   Lesson,
   EvaluationResult,
   UserAnswerHistoryItem,
+  LessonCompletionResult,
 } from "@/features/lesson/types";
 import { evaluateExercise } from "@/features/lesson/evaluation";
 import { LessonHeader } from "./lesson-header";
@@ -30,6 +31,10 @@ export function LessonPlayer({ lesson }: LessonPlayerProps) {
   const [isCompleted, setIsCompleted] = useState(false);
   const [showExitModal, setShowExitModal] = useState(false);
 
+  // Persistence tracking
+  const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "saved" | "error">("idle");
+  const [completionResult, setCompletionResult] = useState<LessonCompletionResult | null>(null);
+
   const currentExercise = lesson.exercises[currentIndex];
   const totalExercises = lesson.exercises.length;
 
@@ -53,7 +58,7 @@ export function LessonPlayer({ lesson }: LessonPlayerProps) {
     }
   }, [currentExercise, currentAnswer]);
 
-  // Submit and evaluate answer
+  // Submit and evaluate answer locally
   const handleSubmit = useCallback(() => {
     if (isSubmitted || !isAnswerValid() || !currentExercise) return;
 
@@ -67,9 +72,44 @@ export function LessonPlayer({ lesson }: LessonPlayerProps) {
         exerciseId: currentExercise.id,
         isCorrect: result.isCorrect,
         summary: result.correctAnswerDisplay,
+        answer: currentAnswer,
       },
     ]);
   }, [isSubmitted, isAnswerValid, currentExercise, currentAnswer]);
+
+  // Save completion to server API
+  const saveCompletion = useCallback(
+    async (historyToSave: UserAnswerHistoryItem[]) => {
+      setSaveStatus("saving");
+      try {
+        const submissions = historyToSave.map((item) => ({
+          exerciseId: item.exerciseId,
+          answer: item.answer,
+        }));
+
+        const response = await fetch("/api/lessons/complete", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            lessonId: lesson.id,
+            submissions,
+          }),
+        });
+
+        if (!response.ok) {
+          setSaveStatus("error");
+          return;
+        }
+
+        const data: LessonCompletionResult = await response.json();
+        setCompletionResult(data);
+        setSaveStatus("saved");
+      } catch {
+        setSaveStatus("error");
+      }
+    },
+    [lesson.id]
+  );
 
   // Proceed to next exercise or complete lesson
   const handleContinue = useCallback(() => {
@@ -80,8 +120,10 @@ export function LessonPlayer({ lesson }: LessonPlayerProps) {
       setEvaluationResult(null);
     } else {
       setIsCompleted(true);
+      // Initiate persistence call
+      saveCompletion(answersHistory);
     }
-  }, [currentIndex, totalExercises]);
+  }, [currentIndex, totalExercises, answersHistory, saveCompletion]);
 
   // Exit handling
   const handleExitRequest = () => {
@@ -105,6 +147,8 @@ export function LessonPlayer({ lesson }: LessonPlayerProps) {
     setEvaluationResult(null);
     setAnswersHistory([]);
     setIsCompleted(false);
+    setSaveStatus("idle");
+    setCompletionResult(null);
   };
 
   if (isCompleted) {
@@ -120,6 +164,9 @@ export function LessonPlayer({ lesson }: LessonPlayerProps) {
           <LessonResult
             lesson={lesson}
             answersHistory={answersHistory}
+            saveStatus={saveStatus}
+            completionResult={completionResult}
+            onRetrySave={() => saveCompletion(answersHistory)}
             onRestart={handleRestart}
           />
         </main>

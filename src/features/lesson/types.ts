@@ -56,6 +56,8 @@ export type Lesson = {
   id: string;
   language: LearningLanguage;
   stageId: string;
+  order: number;
+  estimatedMinutes: number;
   title: string;
   description: string;
   topicsPracticed: string[];
@@ -72,4 +74,20 @@ export type UserAnswerHistoryItem = {
   exerciseId: string;
   isCorrect: boolean;
   summary: string;
+  answer?: unknown;
+};
+
+export type ExerciseSubmission = {
+  exerciseId: string;
+  answer: unknown;
+};
+
+export type LessonCompletionResult = {
+  ok: boolean;
+  isFirstCompletion: boolean;
+  xpAwarded: number;
+  learningMinutes: number;
+  accuracy: number;
+  correctCount: number;
+  totalExercises: number;
 };

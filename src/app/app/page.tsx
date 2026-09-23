@@ -2,7 +2,9 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getUserProfile } from "@/lib/supabase/profile";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
+import { getDashboardLearningData } from "@/lib/supabase/learning-progress";
 import { courses } from "@/data/curriculum";
+import { getNextLessonForUser } from "@/data/lessons";
 import { LearningHeader } from "@/components/learning/learning-header";
 import { ContinueLearningCard } from "@/components/learning/continue-learning-card";
 import { LearningStats } from "@/components/learning/learning-stats";
@@ -40,7 +42,19 @@ export default async function LearningDashboardPage() {
     redirect("/");
   }
 
+  // 1. Fetch real progress data from Supabase
+  const stats = await getDashboardLearningData(
+    user.id,
+    profile.daily_goal_minutes
+  );
+
+  // 2. Resolve the next lesson and stage progression
   const course = courses[profile.learning_language];
+  const nextLesson = getNextLessonForUser(
+    profile.learning_language,
+    stats.completedLessonIds
+  );
+  const hasAnyCompletion = stats.completedLessonIds.length > 0;
   const goalLabel = goalNames[profile.learning_goal] ?? "Phát triển bản thân";
 
   return (
@@ -66,17 +80,28 @@ export default async function LearningDashboardPage() {
             </div>
           </section>
 
-          {/* Continue Learning CTA */}
+          {/* Continue Learning CTA (Dynamic Next Lesson) */}
           <ContinueLearningCard
             course={course}
             learningLanguage={profile.learning_language}
+            nextLesson={nextLesson}
+            hasAnyCompletion={hasAnyCompletion}
           />
 
-          {/* Daily Goal, Streak & XP Stats */}
-          <LearningStats dailyGoalMinutes={profile.daily_goal_minutes} />
+          {/* Real Daily Goal, Streak & XP Stats */}
+          <LearningStats
+            dailyGoalMinutes={profile.daily_goal_minutes}
+            todayLearningMinutes={stats.todayLearningMinutes}
+            totalXp={stats.totalXp}
+            currentStreak={stats.currentStreak}
+          />
 
-          {/* Course Roadmap */}
-          <CoursePath course={course} />
+          {/* Dynamic Course Roadmap */}
+          <CoursePath
+            course={course}
+            learningLanguage={profile.learning_language}
+            completedLessonIds={stats.completedLessonIds}
+          />
         </div>
       </main>
     </div>

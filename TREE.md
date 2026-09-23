@@ -12,7 +12,8 @@ Zhonglish/
 ├── postcss.config.mjs
 ├── components.json
 ├── supabase/migrations/
-│   └── 0001_create_profiles.sql
+│   ├── 0001_create_profiles.sql
+│   └── 0003_learning_progress.sql
 ├── README.md
 ├── 00_START_HERE.md
 ├── AGENTS.md
@@ -27,8 +28,12 @@ Zhonglish/
 │   │   ├── (auth)/
 │   │   ├── onboarding/
 │   │   ├── app/
+│   │   │   ├── page.tsx
+│   │   │   └── lesson/[lessonId]/
 │   │   ├── auth/callback/
-│   │   └── api/onboarding/complete/
+│   │   └── api/
+│   │       ├── onboarding/complete/
+│   │       └── lessons/complete/
 │   ├── proxy.ts
 │   ├── components/
 │   │   ├── ui/
@@ -54,6 +59,7 @@ Zhonglish/
 │           ├── server.ts
 │           ├── proxy.ts
 │           ├── profile.ts
+│           ├── learning-progress.ts
 │           └── config.ts
 ├── docs/
 │   ├── README.md
@@ -94,6 +100,7 @@ Zhonglish/
 │   │   ├── PHASE_0_FOUNDATION.md
 │   │   ├── PHASE_1_LANDING.md
 │   │   ├── PHASE_2_AUTH_ONBOARDING.md
+│   │   ├── PHASE_4_1_LEARNING_PROGRESS.md
 │   │   ├── PROJECT_STATUS.md
 │   │   └── FUTURE_BACKLOG.md
 │   └── 07-references/

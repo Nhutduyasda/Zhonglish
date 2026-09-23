@@ -443,6 +443,27 @@ html { scroll-behavior: smooth; }
   gap: 14px;
 }
 
+.learning-nav-home {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 12px;
+  border-radius: 10px;
+  background: transparent;
+  border: 1px solid var(--border);
+  font-size: 13px;
+  font-weight: 700;
+  color: #4b5563;
+  text-decoration: none;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.learning-nav-home:hover {
+  background: var(--muted);
+  color: var(--foreground);
+  border-color: #cbd5e1;
+}
+
 .learning-user-email {
   font-size: 13px;
   font-weight: 600;
@@ -777,6 +798,18 @@ html { scroll-behavior: smooth; }
   color: #6b7280;
 }
 
+.stat-icon-streak.streak-active {
+  background: #ffedd5;
+  color: #ea580c;
+  box-shadow: 0 0 14px rgba(234, 88, 12, 0.3);
+}
+
+.stat-streak-badge.badge-active {
+  background: #ffedd5;
+  color: #c2410c;
+  font-weight: 800;
+}
+
 .stat-xp-level {
   background: #f3f4f6;
   color: #6b7280;
@@ -829,6 +862,11 @@ html { scroll-behavior: smooth; }
   border-color: #c7d2fe;
 }
 
+.stage-card-completed {
+  border-color: #a7f3d0;
+  background: #fbfdfc;
+}
+
 .stage-card-upcoming {
   opacity: 0.85;
   background: #fcfcfb;
@@ -848,6 +886,11 @@ html { scroll-behavior: smooth; }
   display: grid;
   place-items: center;
   flex-shrink: 0;
+}
+
+.stage-node-completed {
+  background: #059669;
+  color: #ffffff;
 }
 
 .stage-node-ready {
@@ -894,6 +937,11 @@ html { scroll-behavior: smooth; }
   font-weight: 750;
   padding: 3px 10px;
   border-radius: 999px;
+}
+
+.stage-badge-completed {
+  background: #d1fae5;
+  color: #065f46;
 }
 
 .stage-badge-ready {
@@ -947,6 +995,56 @@ html { scroll-behavior: smooth; }
   border-radius: 8px;
   background: var(--muted);
   color: var(--foreground);
+}
+
+.stage-action-row {
+  margin-top: 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.stage-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 18px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 750;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.15s, border-color 0.15s;
+}
+
+.stage-action-start {
+  background: var(--primary);
+  color: #ffffff;
+  border: 1px solid var(--primary);
+}
+
+.stage-action-start:hover {
+  background: #5545d2;
+  transform: translateY(-1px);
+}
+
+.stage-action-replay {
+  background: #ffffff;
+  color: #4b5563;
+  border: 1px solid var(--border);
+}
+
+.stage-action-replay:hover {
+  background: var(--muted);
+  color: var(--foreground);
+  border-color: #cbd5e1;
+  transform: translateY(-1px);
+}
+
+.stage-locked-hint {
+  font-size: 13px;
+  color: var(--muted-foreground);
+  font-style: italic;
 }
 
 /* Phase 4 Preview Modal */
@@ -1121,6 +1219,9 @@ html { scroll-behavior: smooth; }
     height: 60px;
   }
   .learning-user-email {
+    display: none;
+  }
+  .learning-nav-home-text {
     display: none;
   }
   .learning-header-brand-group {
@@ -1791,6 +1892,87 @@ html { scroll-behavior: smooth; }
   font-size: 15px;
   color: var(--muted-foreground);
   margin-top: -12px;
+}
+
+/* Phase 4.1 — Persistence Status & Rewards */
+.result-save-status {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13.5px;
+  font-weight: 600;
+  text-align: left;
+}
+
+.result-save-saving {
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  color: #1d4ed8;
+}
+
+.result-save-success {
+  background: #ecfdf5;
+  border: 1px solid #a7f3d0;
+  color: #065f46;
+}
+
+.result-save-error {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #991b1b;
+}
+
+.save-error-content {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.save-retry-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 8px;
+  background: #ffffff;
+  border: 1px solid #fca5a5;
+  color: #b91c1c;
+  font-size: 12.5px;
+  font-weight: 750;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.save-retry-btn:hover {
+  background: #fee2e2;
+}
+
+.result-rewards-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.reward-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: #f8fafc;
+  border: 1px solid var(--border);
+  font-size: 13.5px;
+  font-weight: 750;
+  color: var(--foreground);
 }
 
 .result-stats-row {

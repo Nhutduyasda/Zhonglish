@@ -1,24 +1,54 @@
-import Link from "next/link";
-import { CheckCircle2, RotateCcw, ArrowRight, Award, BookOpen, AlertCircle } from "lucide-react";
-import type { Lesson, UserAnswerHistoryItem } from "@/features/lesson/types";
+"use client";
+
+import { useRouter } from "next/navigation";
+import {
+  CheckCircle2,
+  RotateCcw,
+  ArrowRight,
+  Award,
+  BookOpen,
+  AlertCircle,
+  Zap,
+  Clock,
+  Loader2,
+  RefreshCw,
+} from "lucide-react";
+import type {
+  Lesson,
+  UserAnswerHistoryItem,
+  LessonCompletionResult,
+} from "@/features/lesson/types";
 
 type LessonResultProps = {
   lesson: Lesson;
   answersHistory: UserAnswerHistoryItem[];
+  saveStatus: "idle" | "saving" | "saved" | "error";
+  completionResult: LessonCompletionResult | null;
+  onRetrySave: () => void;
   onRestart: () => void;
 };
 
 export function LessonResult({
   lesson,
   answersHistory,
+  saveStatus,
+  completionResult,
+  onRetrySave,
   onRestart,
 }: LessonResultProps) {
+  const router = useRouter();
+
   const total = answersHistory.length;
   const correctCount = answersHistory.filter((item) => item.isCorrect).length;
   const accuracy = total > 0 ? Math.round((correctCount / total) * 100) : 0;
 
   // Mistakes in this session
   const wrongExercises = answersHistory.filter((item) => !item.isCorrect);
+
+  const handleReturnToDashboard = () => {
+    router.push("/app");
+    router.refresh();
+  };
 
   return (
     <div className="result-container" role="main" aria-label="Kết quả bài học">
@@ -30,8 +60,40 @@ export function LessonResult({
 
         <h2 className="result-title">Bài học hoàn thành! 🎉</h2>
         <p className="result-subtitle">
-          Bạn vừa hoàn thành xuất sắc bài học “{lesson.title}”.
+          Bạn vừa hoàn thành bài học “{lesson.title}”.
         </p>
+
+        {/* Persistence Status Banner */}
+        {saveStatus === "saving" && (
+          <div className="result-save-status result-save-saving" role="status">
+            <Loader2 size={16} className="animate-spin" aria-hidden="true" />
+            <span>Đang lưu tiến độ học tập...</span>
+          </div>
+        )}
+
+        {saveStatus === "error" && (
+          <div className="result-save-status result-save-error" role="alert">
+            <AlertCircle size={16} aria-hidden="true" />
+            <div className="save-error-content">
+              <span>Chưa thể lưu tiến độ học vào hệ thống.</span>
+              <button
+                type="button"
+                onClick={onRetrySave}
+                className="save-retry-btn"
+              >
+                <RefreshCw size={13} aria-hidden="true" />
+                <span>Thử lưu lại</span>
+              </button>
+            </div>
+          </div>
+        )}
+
+        {saveStatus === "saved" && completionResult && (
+          <div className="result-save-status result-save-success" role="status">
+            <CheckCircle2 size={16} className="text-emerald-600" aria-hidden="true" />
+            <span>Tiến độ đã được ghi nhận vào hồ sơ.</span>
+          </div>
+        )}
 
         {/* Score & Accuracy Stats */}
         <div className="result-stats-row">
@@ -47,6 +109,25 @@ export function LessonResult({
             <span className="result-stat-label">Độ chính xác</span>
           </div>
         </div>
+
+        {/* Real Rewards from Database */}
+        {saveStatus === "saved" && completionResult && (
+          <div className="result-rewards-row">
+            <div className="reward-badge">
+              <Zap size={18} className="text-amber-500 fill-amber-500" aria-hidden="true" />
+              <span>
+                {completionResult.isFirstCompletion
+                  ? `+${completionResult.xpAwarded} XP`
+                  : "Đã hoàn thành trước đó (+0 XP)"}
+              </span>
+            </div>
+
+            <div className="reward-badge">
+              <Clock size={18} className="text-emerald-600" aria-hidden="true" />
+              <span>+{completionResult.learningMinutes} phút học tập</span>
+            </div>
+          </div>
+        )}
 
         {/* Practiced Concepts */}
         <div className="result-section">
@@ -77,13 +158,6 @@ export function LessonResult({
           </div>
         )}
 
-        {/* Neutral gamification notice (no fake XP / Streak) */}
-        <div className="result-gamification-notice">
-          <p>
-            Điểm thưởng và chuỗi ngày học sẽ được kết nối ở giai đoạn gamification.
-          </p>
-        </div>
-
         {/* Actions */}
         <div className="result-actions">
           <button
@@ -95,10 +169,14 @@ export function LessonResult({
             <span>Học lại</span>
           </button>
 
-          <Link href="/app" className="result-dashboard-btn">
+          <button
+            type="button"
+            onClick={handleReturnToDashboard}
+            className="result-dashboard-btn"
+          >
             <span>Quay lại Dashboard</span>
             <ArrowRight size={17} aria-hidden="true" />
-          </Link>
+          </button>
         </div>
       </div>
     </div>

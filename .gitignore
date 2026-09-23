@@ -16,3 +16,6 @@ dist/
 Thumbs.db
 .vscode/
 .idea/
+.temp/
+supabase/.temp/
+scratch/
