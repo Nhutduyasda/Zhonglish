@@ -11,6 +11,10 @@ create table if not exists public.profiles (
 
 alter table public.profiles enable row level security;
 
+-- The Data API may require explicit grants on newly created projects.
+revoke all on public.profiles from anon;
+grant select, insert, update on public.profiles to authenticated;
+
 create policy "Users select own profile" on public.profiles
   for select to authenticated using ((select auth.uid()) = id);
 create policy "Users insert own profile" on public.profiles
@@ -26,5 +30,6 @@ begin
   return new;
 end;
 $$;
+revoke all on function public.set_profile_updated_at() from public;
 create trigger set_profile_updated_at before update on public.profiles
   for each row execute function public.set_profile_updated_at();

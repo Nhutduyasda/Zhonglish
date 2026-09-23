@@ -1,6 +1,6 @@
 # Phase 2 — Authentication + Beginner Onboarding
 
-Status: **Partial — implementation built, external configuration and live verification pending.**
+Status: **Partial — database migrations applied; production configuration and live auth verification pending.**
 
 ## Architecture
 
@@ -12,7 +12,7 @@ Status: **Partial — implementation built, external configuration and live veri
 
 ## Supabase setup
 
-1. Create a Supabase project and apply `supabase/migrations/0001_create_profiles.sql` through the SQL editor or migration workflow. This has **not** been applied in this environment.
+1. The Zhonglish Supabase project (`aiywduzzscscdiaxptqq`) has both `create_profiles` and `restrict_profile_grants` migrations applied. Keep both migration files for fresh environments.
 2. In Supabase Auth, enable email/password. Add `http://localhost:3000/auth/callback` and `https://zhonglish.vercel.app/auth/callback` to redirect URLs; configure preview domains as needed.
 3. For SSR confirmation emails, use a confirmation template that sends `token_hash` and `type=email` to `/auth/callback`, or a PKCE code link. Verify the actual template and recovery URL in the project.
 4. Set `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` and `NEXT_PUBLIC_APP_URL` in local and Vercel Development, Preview and Production environments. Never commit a service role key or database password.
@@ -20,7 +20,7 @@ Status: **Partial — implementation built, external configuration and live veri
 
 ## Database and RLS
 
-`public.profiles` contains a user-owned UUID and four constrained onboarding fields, completion flag and timestamps. RLS is enabled with own-row select/insert/update policies based on `auth.uid()`. No public read policy. Two-account cross-user tests have **not** been run; do not assume the migration is active merely because it exists in Git.
+`public.profiles` contains a user-owned UUID and four constrained onboarding fields, completion flag and timestamps. RLS is enabled with own-row select/insert/update policies based on `auth.uid()`. Database verification confirmed RLS and three policies; `authenticated` has only SELECT, INSERT and UPDATE grants, and `anon` has none. Supabase security advisors reported no findings. Two-account cross-user tests have **not** been run.
 
 ## User flow
 
@@ -36,7 +36,7 @@ Sign-up handles both active-session and confirmation-email configurations. Sign-
 
 ## Still required before completion
 
-- Connect a real Supabase project and verify migration and RLS with two separate accounts.
+- Verify RLS with two separate authenticated accounts.
 - Verify sign-up, confirmation, sign-in, reset, sign-out, session refresh, profile write and redirects.
 - Test production Vercel cookies and redirects, plus responsive 375px, 768px and 1440px browser QA.
 - If confirmation email is opened on another device/tab, the in-tab onboarding draft is unavailable there; the user can complete onboarding again. A cross-device pre-auth draft would require a separate design.
