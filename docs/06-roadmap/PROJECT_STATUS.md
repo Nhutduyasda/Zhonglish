@@ -1,6 +1,6 @@
 # Zhonglish Project Status
 
-Current Phase: **Phase 5.1 — Production Hardening (Partial, not deployed)**
+Current Phase: **Phase 5.1 — Production Hardening (Partial, deployed; E2E pending)**
 
 ## Completed
 
@@ -16,7 +16,7 @@ Current Phase: **Phase 5.1 — Production Hardening (Partial, not deployed)**
 
 ## Next
 
-- Finish [Phase 5.1 production hardening](PHASE_5_1_PRODUCTION_HARDENING.md): deploy the prepared server code, revoke the old public completion RPC, then verify production E2E. Migration history was reconciled and the new RPC was added in production.
+- Finish [Phase 5.1 production hardening](PHASE_5_1_PRODUCTION_HARDENING.md): verify authenticated production E2E for completion, replay, progress and isolation. The app and both security migrations are deployed; RPC exposure is closed.
 - Phase 6 — Gamification only after the Phase 5.1 release gate passes.
 
 ## Not Started
