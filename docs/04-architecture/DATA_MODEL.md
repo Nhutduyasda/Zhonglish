@@ -109,6 +109,6 @@ RLS: Authenticated users can only `SELECT` their own activity rows. Insertion is
 - strength
 - nextReviewAt
 
-## Phase 5.1 pending deployment
+## Phase 5.1 deployed; production E2E pending
 
-The remote database currently has the Phase 4.1 tables and RPC but not the corresponding migration history. The public `record_lesson_completion` is executable by `authenticated` and can be forged; this must be removed before Phase 6. The prepared migration adds `learning_activity.request_id` with a unique per-user retry index and `record_trusted_lesson_completion`, executable only by `service_role`. The server validates the authenticated user, canonical lesson and score before invoking it. The new RPC and application are deployed; direct authenticated execution of both old and new RPCs has been revoked. Production E2E is pending; see `docs/06-roadmap/PHASE_5_1_PRODUCTION_HARDENING.md`.
+Migration history for the existing Phase 4.1 tables has been reconciled. The deployed migration adds `learning_activity.request_id` with a unique per-user retry index and `record_trusted_lesson_completion`, executable only by `service_role`. The server validates the authenticated user, canonical lesson and score before invoking it. Direct authenticated execution of both old and new RPCs has been revoked, and authenticated table grants are SELECT only. Production E2E is pending; see `docs/06-roadmap/PHASE_5_1_PRODUCTION_HARDENING.md`.
