@@ -1,6 +1,6 @@
 # Zhonglish Project Status
 
-Current Phase: **Phase 3 — Learning Dashboard (Completed)**
+Current Phase: **Phase 4 — Lesson Engine (Completed)**
 
 ## Completed
 
@@ -10,14 +10,14 @@ Current Phase: **Phase 3 — Learning Dashboard (Completed)**
 - Phase 1 landing deployed at https://zhonglish.vercel.app and accepted as completed by the project owner. Desktop production interactions and page overflow were checked.
 - Phase 2 code and build implemented. The `profiles` migrations have been applied to the Zhonglish Supabase project; RLS, policies and table grants were verified.
 - Phase 3 — Learning Dashboard: `/app` route fully replaced with Learning Dashboard. Connected to Supabase `profiles` (`learning_language`, `learning_goal`, `daily_goal_minutes`), dynamic curriculum preview for English and Chinese, authentic 0-stat baseline (0 XP, 0 Streak, 0/N min daily goal), accessible hero Continue Learning CTA card with Phase 4 preparation, responsive for 375px/768px/1440px without overflow, lint/typecheck/build passed.
+- Phase 4 — Lesson Engine: `/app/lesson/[lessonId]` server-guarded route; pure deterministic evaluation; typed exercise primitives (Multiple Choice, Text Input, Matching, Listening via Web Speech API); encouragement feedback without shaming; session result screen with accuracy % and restart; starter lessons `english-survival-1` and `chinese-survival-1`; direct connection to Dashboard Continue Learning CTA; responsive 375px/768px/1440px; lint/typecheck/build passed.
 
 ## Next
 
-- Phase 4 — Lesson Engine: exercise renderer, multiple choice, matching, listening, text input, instant feedback, result screen.
+- Phase 5 — Chinese Foundation: Hanzi characters, Pinyin support, pronunciation foundation, Chinese-specific exercises.
 
 ## Not Started
 
-- Phase 4 — Lesson Engine
 - Phase 5 — Chinese Foundation
 - Phase 6 — Gamification
 - Phase 7 — Persistence + Review
