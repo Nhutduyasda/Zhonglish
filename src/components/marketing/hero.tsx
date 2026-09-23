@@ -8,7 +8,7 @@ export function Hero() {
         <h1 id="hero-title">Một ngôn ngữ mới.<br /><span>Một bước thật nhỏ.</span></h1>
         <p className="hero-description">Không cần biết bắt đầu từ đâu. Học English và Chinese qua những bài học ngắn, trực quan và dễ hiểu.</p>
         <div className="hero-actions">
-          <a className="action-primary" href="#languages">Bắt đầu học <ArrowUpRight size={19} aria-hidden="true" /></a>
+          <a className="action-primary" href="/onboarding">Bắt đầu học <ArrowUpRight size={19} aria-hidden="true" /></a>
           <a className="action-secondary" href="#how-it-works">Xem cách học <ArrowDown size={18} aria-hidden="true" /></a>
         </div>
       </div>

@@ -1,6 +1,6 @@
 # Phase 1 — Skolla-inspired Landing
 
-Status: **Implementation complete; visual browser QA pending.**
+Status: **Completed and deployed, as confirmed by the project owner.** Desktop production interaction was checked in Phase 2; mobile and tablet visual checks were not available in this browser session.
 
 ## Scope
 
@@ -45,7 +45,7 @@ CSS recomposes the hero, experience grid, preview and progress section at 900px,
 
 ## Pending visual QA
 
-The available cloud browser blocks `127.0.0.1` with `ERR_BLOCKED_BY_CLIENT`, so 375px, 768px and 1440px screenshots, live mobile-menu/FAQ clicks, browser console, hydration and horizontal-overflow checks are **not verified**. A Vercel deployment was not performed. Recheck these before labeling Phase 1 fully completed.
+The local server was blocked by the cloud browser, but the page is now available at `https://zhonglish.vercel.app`. In Phase 2 desktop production QA, the landing rendered, language preview and FAQ responded, and the document did not overflow horizontally. Mobile and tablet viewport screenshots and the mobile menu remain unverified here.
 
 ## Known limitations
 

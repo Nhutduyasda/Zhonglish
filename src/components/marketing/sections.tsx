@@ -49,7 +49,7 @@ export function Trust() {
 }
 
 export function FinalCTA() {
-  return <section className="final-cta page-width" aria-labelledby="final-title"><div className="final-orbit" aria-hidden="true">A <span>中</span></div><p className="eyebrow">BẮT ĐẦU TỪ HÔM NAY</p><h2 id="final-title">Một ngôn ngữ mới có thể bắt đầu từ vài phút.</h2><a className="action-primary" href="#languages">Chọn ngôn ngữ <ArrowUpRight size={19} aria-hidden="true" /></a></section>;
+  return <section className="final-cta page-width" aria-labelledby="final-title"><div className="final-orbit" aria-hidden="true">A <span>中</span></div><p className="eyebrow">BẮT ĐẦU TỪ HÔM NAY</p><h2 id="final-title">Một ngôn ngữ mới có thể bắt đầu từ vài phút.</h2><a className="action-primary" href="/onboarding">Chọn ngôn ngữ <ArrowUpRight size={19} aria-hidden="true" /></a></section>;
 }
 
 export function Footer() {

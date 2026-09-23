@@ -11,6 +11,8 @@ Zhonglish/
 ├── eslint.config.mjs
 ├── postcss.config.mjs
 ├── components.json
+├── supabase/migrations/
+│   └── 0001_create_profiles.sql
 ├── README.md
 ├── 00_START_HERE.md
 ├── AGENTS.md
@@ -21,9 +23,13 @@ Zhonglish/
 │   ├── app/
 │   │   ├── layout.tsx
 │   │   ├── globals.css
-│   │   └── (marketing)/
-│   │       ├── layout.tsx
-│   │       └── page.tsx
+│   │   ├── (marketing)/
+│   │   ├── (auth)/
+│   │   ├── onboarding/
+│   │   ├── app/
+│   │   ├── auth/callback/
+│   │   └── api/onboarding/complete/
+│   ├── proxy.ts
 │   ├── components/
 │   │   ├── ui/
 │   │   │   └── button.tsx
@@ -33,10 +39,22 @@ Zhonglish/
 │   │       ├── sections.tsx
 │   │       ├── language-experience.tsx
 │   │       └── faq.tsx
+│   │   ├── auth/
+│   │   │   └── auth-form.tsx
+│   │   └── onboarding/
+│   │       └── onboarding-flow.tsx
 │   ├── data/
 │   │   └── marketing.ts
+│   ├── features/onboarding/
+│   │   └── draft.ts
 │   └── lib/
-│       └── utils.ts
+│       ├── utils.ts
+│       └── supabase/
+│           ├── client.ts
+│           ├── server.ts
+│           ├── proxy.ts
+│           ├── profile.ts
+│           └── config.ts
 ├── docs/
 │   ├── README.md
 │   ├── 00-product/
@@ -75,6 +93,7 @@ Zhonglish/
 │   │   ├── MVP_ROADMAP.md
 │   │   ├── PHASE_0_FOUNDATION.md
 │   │   ├── PHASE_1_LANDING.md
+│   │   ├── PHASE_2_AUTH_ONBOARDING.md
 │   │   ├── PROJECT_STATUS.md
 │   │   └── FUTURE_BACKLOG.md
 │   └── 07-references/

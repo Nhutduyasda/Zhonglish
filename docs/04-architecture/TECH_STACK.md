@@ -9,9 +9,9 @@
 - shadcn/ui
 - Framer Motion
 - Lucide icons
-- PostgreSQL
-- Prisma or Drizzle
-- Auth.js / Clerk / equivalent based on final decision
+- Supabase PostgreSQL for user profiles (Phase 2 migration)
+- Supabase Auth email/password with `@supabase/ssr` cookie sessions (Phase 2)
+- Prisma or Drizzle may be reconsidered for later domain data; neither is installed
 - Vercel
 
 ## Optional later

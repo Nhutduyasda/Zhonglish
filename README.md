@@ -41,4 +41,4 @@ npm run typecheck
 npm run build
 ```
 
-Các biến môi trường dự kiến cho các phase sau nằm trong `.env.example`; Phase 0 không cần cấu hình chúng.
+Phase 2 cần Supabase để dùng tài khoản và lưu onboarding. Xem `.env.example` và `docs/06-roadmap/PHASE_2_AUTH_ONBOARDING.md` để cấu hình project, migration và callback URL. Khi chưa cấu hình Supabase, landing vẫn build và chạy được; luồng tài khoản chưa hoạt động.
