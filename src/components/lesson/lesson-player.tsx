@@ -33,6 +33,7 @@ export function LessonPlayer({ lesson }: LessonPlayerProps) {
 
   // Persistence tracking
   const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "saved" | "error">("idle");
+  const [saveErrorMessage, setSaveErrorMessage] = useState<string | null>(null);
   const [completionResult, setCompletionResult] = useState<LessonCompletionResult | null>(null);
 
   const currentExercise = lesson.exercises[currentIndex];
@@ -81,6 +82,7 @@ export function LessonPlayer({ lesson }: LessonPlayerProps) {
   const saveCompletion = useCallback(
     async (historyToSave: UserAnswerHistoryItem[]) => {
       setSaveStatus("saving");
+      setSaveErrorMessage(null);
       try {
         const submissions = historyToSave.map((item) => ({
           exerciseId: item.exerciseId,
@@ -97,6 +99,11 @@ export function LessonPlayer({ lesson }: LessonPlayerProps) {
         });
 
         if (!response.ok) {
+          const errData = await response.json().catch(() => null);
+          const msg =
+            errData?.error || "Chưa thể lưu tiến độ học vào hệ thống.";
+          console.error("Save completion failed:", response.status, errData);
+          setSaveErrorMessage(msg);
           setSaveStatus("error");
           return;
         }
@@ -104,7 +111,9 @@ export function LessonPlayer({ lesson }: LessonPlayerProps) {
         const data: LessonCompletionResult = await response.json();
         setCompletionResult(data);
         setSaveStatus("saved");
-      } catch {
+      } catch (err) {
+        console.error("Save completion error:", err);
+        setSaveErrorMessage("Lỗi kết nối mạng khi gửi dữ liệu bài học.");
         setSaveStatus("error");
       }
     },
@@ -165,6 +174,7 @@ export function LessonPlayer({ lesson }: LessonPlayerProps) {
             lesson={lesson}
             answersHistory={answersHistory}
             saveStatus={saveStatus}
+            saveErrorMessage={saveErrorMessage}
             completionResult={completionResult}
             onRetrySave={() => saveCompletion(answersHistory)}
             onRestart={handleRestart}

@@ -119,8 +119,21 @@ export async function POST(request: Request) {
 
   if (rpcError) {
     console.error("Error recording lesson completion:", rpcError);
+    const isMissingFunctionOrTable =
+      rpcError.code === "PGRST202" ||
+      rpcError.code === "42883" ||
+      rpcError.code === "42P01" ||
+      rpcError.message?.toLowerCase().includes("does not exist") ||
+      rpcError.message?.toLowerCase().includes("schema cache");
+
     return NextResponse.json(
-      { error: "Chưa thể lưu tiến độ học. Vui lòng thử lại." },
+      {
+        error: isMissingFunctionOrTable
+          ? "Cơ sở dữ liệu Supabase chưa được cập nhật bảng/hàm tiến độ. Vui lòng chạy file migration 'supabase/migrations/0003_learning_progress.sql' trên Supabase SQL Editor."
+          : `Lỗi cơ sở dữ liệu: ${rpcError.message || "Chưa thể lưu tiến độ học."}`,
+        details: rpcError.message,
+        code: rpcError.code,
+      },
       { status: 500 }
     );
   }

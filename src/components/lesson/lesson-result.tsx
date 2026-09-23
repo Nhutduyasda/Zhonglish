@@ -23,6 +23,7 @@ type LessonResultProps = {
   lesson: Lesson;
   answersHistory: UserAnswerHistoryItem[];
   saveStatus: "idle" | "saving" | "saved" | "error";
+  saveErrorMessage?: string | null;
   completionResult: LessonCompletionResult | null;
   onRetrySave: () => void;
   onRestart: () => void;
@@ -32,6 +33,7 @@ export function LessonResult({
   lesson,
   answersHistory,
   saveStatus,
+  saveErrorMessage,
   completionResult,
   onRetrySave,
   onRestart,
@@ -75,7 +77,7 @@ export function LessonResult({
           <div className="result-save-status result-save-error" role="alert">
             <AlertCircle size={16} aria-hidden="true" />
             <div className="save-error-content">
-              <span>Chưa thể lưu tiến độ học vào hệ thống.</span>
+              <span>{saveErrorMessage || "Chưa thể lưu tiến độ học vào hệ thống."}</span>
               <button
                 type="button"
                 onClick={onRetrySave}

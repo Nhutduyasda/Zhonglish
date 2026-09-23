@@ -46,9 +46,11 @@ revoke all on public.learning_activity from anon;
 grant select on public.lesson_progress to authenticated;
 grant select on public.learning_activity to authenticated;
 
+drop policy if exists "Users select own lesson_progress" on public.lesson_progress;
 create policy "Users select own lesson_progress" on public.lesson_progress
   for select to authenticated using ((select auth.uid()) = user_id);
 
+drop policy if exists "Users select own learning_activity" on public.learning_activity;
 create policy "Users select own learning_activity" on public.learning_activity
   for select to authenticated using ((select auth.uid()) = user_id);
 
