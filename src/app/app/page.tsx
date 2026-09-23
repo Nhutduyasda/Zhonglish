@@ -1,19 +1,84 @@
-import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { authStatus } from "@/lib/supabase/profile";
+import { getUserProfile } from "@/lib/supabase/profile";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
+import { courses } from "@/data/curriculum";
+import { LearningHeader } from "@/components/learning/learning-header";
+import { ContinueLearningCard } from "@/components/learning/continue-learning-card";
+import { LearningStats } from "@/components/learning/learning-stats";
+import { CoursePath } from "@/components/learning/course-path";
 
-export default async function Page() {
-  if (!isSupabaseConfigured()) redirect("/sign-in");
-  const status = await authStatus();
-  if (!status.user) redirect("/sign-in");
-  if (!status.completed) redirect("/onboarding?resume=1");
+export const dynamic = "force-dynamic";
+
+const goalNames: Record<string, string> = {
+  communication: "Giao tiếp tự tin",
+  work: "Phục vụ công việc",
+  travel: "Du lịch & trải nghiệm",
+  study: "Du học & chứng chỉ",
+  other: "Sở thích cá nhân",
+};
+
+export default async function LearningDashboardPage() {
+  if (!isSupabaseConfigured()) {
+    redirect("/sign-in");
+  }
+
+  const { user, profile } = await getUserProfile();
+
+  if (!user) {
+    redirect("/sign-in");
+  }
+
+  if (!profile || !profile.onboarding_completed) {
+    redirect("/onboarding?resume=1");
+  }
+
   async function signOut() {
     "use server";
     const supabase = await createClient();
     await supabase.auth.signOut();
     redirect("/");
   }
-  return <main className="app-placeholder"><div><Link href="/" className="auth-brand">✳ Zhonglish</Link><h1>Hồ sơ học tập đã sẵn sàng.</h1><p>Dashboard học tập sẽ được xây dựng ở Phase 3.</p><div className="app-actions"><Link href="/">Quay lại trang chủ</Link><form action={signOut}><button type="submit">Đăng xuất</button></form></div></div></main>;
+
+  const course = courses[profile.learning_language];
+  const goalLabel = goalNames[profile.learning_goal] ?? "Phát triển bản thân";
+
+  return (
+    <div className="learning-shell">
+      <LearningHeader
+        learningLanguage={profile.learning_language}
+        userEmail={user.email}
+        signOutAction={signOut}
+      />
+
+      <main className="learning-main">
+        <div className="learning-content-container">
+          {/* Greeting section */}
+          <section className="learning-greeting-section" aria-label="Lời chào">
+            <div className="learning-greeting-content">
+              <h1 className="learning-greeting-title">
+                Chào mừng bạn quay lại 👋
+              </h1>
+              <p className="learning-greeting-subtitle">
+                Khoá học: <strong>{course.name}</strong> · Mục tiêu:{" "}
+                <strong>{goalLabel}</strong>
+              </p>
+            </div>
+          </section>
+
+          {/* Continue Learning CTA */}
+          <ContinueLearningCard
+            course={course}
+            learningLanguage={profile.learning_language}
+          />
+
+          {/* Daily Goal, Streak & XP Stats */}
+          <LearningStats dailyGoalMinutes={profile.daily_goal_minutes} />
+
+          {/* Course Roadmap */}
+          <CoursePath course={course} />
+        </div>
+      </main>
+    </div>
+  );
 }
