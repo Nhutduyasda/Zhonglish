@@ -18,6 +18,7 @@ import type {
   UserAnswerHistoryItem,
   LessonCompletionResult,
 } from "@/features/lesson/types";
+import { achievements } from "@/data/achievements";
 
 type LessonResultProps = {
   lesson: Lesson;
@@ -126,8 +127,19 @@ export function LessonResult({
 
             <div className="reward-badge">
               <Clock size={18} className="text-emerald-600" aria-hidden="true" />
-              <span>+{completionResult.learningMinutes} phút học tập</span>
+              <span>{completionResult.dailyGoalMinutesAdded > 0
+                ? `+${completionResult.dailyGoalMinutesAdded} phút vào mục tiêu hôm nay`
+                : "Bài này đã tính vào mục tiêu hôm nay"}</span>
             </div>
+          </div>
+        )}
+
+        {saveStatus === "saved" && completionResult && completionResult.newAchievements.length > 0 && (
+          <div className="result-save-status result-save-success" role="status">
+            <Award size={18} aria-hidden="true" />
+            <span>Thành tích mới: {completionResult.newAchievements.map((id) =>
+              achievements.find((item) => item.id === id)?.title ?? id
+            ).join(", ")}</span>
           </div>
         )}
 

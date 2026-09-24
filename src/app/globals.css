@@ -816,6 +816,24 @@ html { scroll-behavior: smooth; }
 }
 
 /* Course Path Roadmap */
+.achievements-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.achievements-section h2 { font-size: 22px; font-weight: 800; color: var(--foreground); }
+.achievements-section > div > p { color: var(--muted-foreground); font-size: 14px; margin-top: 4px; }
+.achievements-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.achievement-item { display: flex; align-items: flex-start; gap: 12px; padding: 18px; border: 1px solid var(--border); border-radius: 18px; background: #fff; }
+.achievement-earned { background: var(--muted); }
+.achievement-icon { flex: none; color: var(--muted-foreground); }
+.achievement-earned .achievement-icon { color: #c2410c; }
+.achievement-item h3 { font-weight: 750; font-size: 15px; }
+.achievement-item p { color: var(--muted-foreground); font-size: 13px; margin-top: 4px; }
+.achievement-state { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 700; margin-top: 10px; }
+@media (max-width: 850px) { .achievements-grid { grid-template-columns: 1fr; } }
+
 .course-path-section {
   display: flex;
   flex-direction: column;
@@ -2368,5 +2386,4 @@ html { scroll-behavior: smooth; }
     font-size: 46px;
   }
 }
-
 

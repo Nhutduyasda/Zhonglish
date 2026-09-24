@@ -117,6 +117,8 @@ export type LessonCompletionResult = {
   isFirstCompletion: boolean;
   xpAwarded: number;
   learningMinutes: number;
+  dailyGoalMinutesAdded: number;
+  newAchievements: import("@/data/achievements").AchievementId[];
   accuracy: number;
   correctCount: number;
   totalExercises: number;

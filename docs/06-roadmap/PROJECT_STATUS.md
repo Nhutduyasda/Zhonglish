@@ -1,6 +1,6 @@
 # Zhonglish Project Status
 
-Current Phase: **Phase 5.1 — Production Hardening (Partial; additional stage guard awaiting deployment and live negative/concurrency checks pending)**
+Current Phase: **Phase 6 — Gamification (implementation in progress; production verification pending). Phase 5.1 negative/concurrency tests remain open at the owner's direction.**
 
 ## Completed
 
@@ -17,11 +17,10 @@ Current Phase: **Phase 5.1 — Production Hardening (Partial; additional stage g
 ## Next
 
 - Finish [Phase 5.1 production hardening](PHASE_5_1_PRODUCTION_HARDENING.md): deploy and verify server-side stage guard; test two independent authenticated sessions, forged/denied writes and concurrent completion/retry on a disposable test lesson/account. A previous Chinese production completion and replay were confirmed by the owner; direct RPC access is revoked and read isolation was checked with simulated SQL roles.
-- Phase 6 — Gamification only after the Phase 5.1 release gate passes.
+- Implement and verify [Phase 6 — Gamification](PHASE_6_GAMIFICATION.md). Production sign-in, lesson reward, retry, streak, responsive and error-state checks are still required; leaderboard is deferred for privacy and identity design.
 
 ## Not Started
 
-- Phase 6 — Gamification
 - Phase 7 — Persistence + Review
 - Phase 8 — Polish
 
