@@ -1,12 +1,12 @@
 # Phase 6 — Gamification
 
-Status: **Implementation in progress; production end-to-end acceptance pending.** The owner explicitly requested continuing Phase 6 on 2026-09-24 after being told that Phase 5.1 negative and concurrency tests remain outstanding. Those limitations remain open and are not reclassified as passed.
+Status: **Code implemented; production end-to-end acceptance pending.** The owner requested deploying the code first and will test on the website afterwards. The outstanding Phase 5.1 negative/concurrency checks and Phase 6 user flows remain open; deployment must not be described as acceptance.
 
 ## Evidence so far
 
 - Supabase migration `20260924012202` is applied. Catalog inspection confirms `get_learning_summary()` is `SECURITY INVOKER`, executable by `authenticated` and denied to `anon`. Security Advisor reports only disabled leaked-password protection; Performance Advisor has no notices.
 - Read-only database-role simulations for two existing accounts returned respectively 30 XP / two achieved badges and 0 XP / no badges. Neither simulation writes activities or exercises two signed browser sessions.
-- Local lint, typecheck and production build pass. The new application screens and new completion response have **not** yet been deployed or exercised end to end in production.
+- Local lint, typecheck and production build pass. At the time of this write-up, the application screens and new completion response have **not** yet been exercised end to end in production. The owner will do this after deployment.
 
 ## Rules
 
