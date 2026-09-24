@@ -16,6 +16,7 @@ Current Phase: **Phase 6 — Gamification (code implemented; production verifica
 
 ## Next
 
+- Phase 7 release gate checked on 2026-09-24: the signed-in production Dashboard renders 30 XP, a two-day streak and the first two earned achievements; its Chinese lesson opens and returns to the Dashboard without a completion write. Supabase reports six applied migrations, RLS on all three public tables, one completed profile, three progress rows and three activity rows. Security Advisor still reports disabled leaked-password protection; Performance Advisor is clean. This does **not** close the gate: dedicated confirmed test accounts and two independent signed-in sessions are unavailable for the locked-lesson, direct-write/RPC, retry, concurrency and cross-user E2E checks. Phase 7 implementation has not started.
 - Finish [Phase 5.1 production hardening](PHASE_5_1_PRODUCTION_HARDENING.md): deploy and verify server-side stage guard; test two independent authenticated sessions, forged/denied writes and concurrent completion/retry on a disposable test lesson/account. A previous Chinese production completion and replay were confirmed by the owner; direct RPC access is revoked and read isolation was checked with simulated SQL roles.
 - Owner to verify [Phase 6 — Gamification](PHASE_6_GAMIFICATION.md) on the website: sign-in, lesson rewards, same-day replay, retry, streak, responsive and loading/error states. Leaderboard is deferred for privacy and identity design; do not start Phase 7 before deciding how to close the remaining checks.
 
