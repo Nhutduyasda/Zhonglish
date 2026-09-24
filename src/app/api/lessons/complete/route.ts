@@ -4,6 +4,7 @@ import { getUserProfile } from "@/lib/supabase/profile";
 import { getLessonById } from "@/data/lessons";
 import { evaluateExercise } from "@/features/lesson/evaluation";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { isLessonUnlocked } from "@/lib/supabase/lesson-access";
 import type { ExerciseSubmission } from "@/features/lesson/types";
 
 export async function POST(request: Request) {
@@ -68,6 +69,14 @@ export async function POST(request: Request) {
       { error: "Bài học không thuộc ngôn ngữ học tập hiện tại." },
       { status: 403 }
     );
+  }
+
+  try {
+    if (!(await isLessonUnlocked(user.id, lesson))) {
+      return NextResponse.json({ error: "Giai đoạn này chưa mở khóa." }, { status: 403 });
+    }
+  } catch {
+    return NextResponse.json({ error: "Chưa thể kiểm tra lộ trình. Vui lòng thử lại." }, { status: 503 });
   }
 
   // Validate submissions array

@@ -3,6 +3,7 @@ import { isSupabaseConfigured } from "@/lib/supabase/config";
 import { getUserProfile } from "@/lib/supabase/profile";
 import { getLessonById, getStarterLessonForLanguage } from "@/data/lessons";
 import { LessonPlayer } from "@/components/lesson/lesson-player";
+import { isLessonUnlocked } from "@/lib/supabase/lesson-access";
 
 export const dynamic = "force-dynamic";
 
@@ -40,6 +41,14 @@ export default async function LessonPage({ params }: LessonPageProps) {
     const safeStarterLesson = getStarterLessonForLanguage(profile.learning_language);
     redirect(`/app/lesson/${safeStarterLesson}`);
   }
+
+  let unlocked = false;
+  try {
+    unlocked = await isLessonUnlocked(user.id, lesson);
+  } catch {
+    redirect("/app");
+  }
+  if (!unlocked) redirect("/app");
 
   return <LessonPlayer lesson={lesson} />;
 }
