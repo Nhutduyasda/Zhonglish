@@ -9,6 +9,7 @@ import { LearningHeader } from "@/components/learning/learning-header";
 import { ContinueLearningCard } from "@/components/learning/continue-learning-card";
 import { LearningStats } from "@/components/learning/learning-stats";
 import { CoursePath } from "@/components/learning/course-path";
+import { Achievements } from "@/components/learning/achievements";
 
 export const dynamic = "force-dynamic";
 
@@ -43,10 +44,7 @@ export default async function LearningDashboardPage() {
   }
 
   // 1. Fetch real progress data from Supabase
-  const stats = await getDashboardLearningData(
-    user.id,
-    profile.daily_goal_minutes
-  );
+  const stats = await getDashboardLearningData(user.id);
 
   // 2. Resolve the next lesson and stage progression
   const course = courses[profile.learning_language];
@@ -95,6 +93,8 @@ export default async function LearningDashboardPage() {
             totalXp={stats.totalXp}
             currentStreak={stats.currentStreak}
           />
+
+          <Achievements earnedIds={stats.earnedAchievementIds} />
 
           {/* Dynamic Course Roadmap */}
           <CoursePath

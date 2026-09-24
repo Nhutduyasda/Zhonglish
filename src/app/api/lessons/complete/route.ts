@@ -5,6 +5,7 @@ import { getLessonById } from "@/data/lessons";
 import { evaluateExercise } from "@/features/lesson/evaluation";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { isLessonUnlocked } from "@/lib/supabase/lesson-access";
+import { getLearningSummary } from "@/lib/supabase/learning-progress";
 import type { ExerciseSubmission } from "@/features/lesson/types";
 
 export async function POST(request: Request) {
@@ -131,6 +132,12 @@ export async function POST(request: Request) {
   if (!process.env.SUPABASE_SERVICE_ROLE_KEY) {
     return NextResponse.json({ error: "Chưa cấu hình máy chủ lưu tiến độ." }, { status: 503 });
   }
+  let before;
+  try {
+    before = await getLearningSummary();
+  } catch {
+    return NextResponse.json({ error: "Chưa thể kiểm tra phần thưởng. Vui lòng thử lại." }, { status: 503 });
+  }
   const supabase = createAdminClient();
   const { data: rpcResult, error: rpcError } = await supabase.rpc(
     "record_trusted_lesson_completion",
@@ -172,11 +179,21 @@ export async function POST(request: Request) {
     learning_minutes?: number;
   };
 
+  let after;
+  try {
+    after = await getLearningSummary();
+  } catch {
+    // Retrying with the same UUID is safe: the database already saved this completion.
+    return NextResponse.json({ error: "Đã lưu bài nhưng chưa đọc được phần thưởng. Vui lòng thử lưu lại." }, { status: 503 });
+  }
+
   return NextResponse.json({
     ok: true,
     isFirstCompletion: completionData?.is_first_completion ?? false,
     xpAwarded: completionData?.xp_awarded ?? 0,
     learningMinutes: completionData?.learning_minutes ?? lesson.estimatedMinutes,
+    dailyGoalMinutesAdded: Math.max(0, after.todayLearningMinutes - before.todayLearningMinutes),
+    newAchievements: after.earnedAchievementIds.filter((id) => !before.earnedAchievementIds.includes(id)),
     accuracy,
     correctCount,
     totalExercises,

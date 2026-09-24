@@ -34,7 +34,7 @@ export function LearningStats({
             {todayLearningMinutes}{" "}
             <span className="stat-unit">/ {dailyGoalMinutes} phút</span>
           </div>
-          <p className="stat-subtext">{progressPercent}% hoàn thành hôm nay</p>
+          <p className="stat-subtext">{progressPercent}% hoàn thành · mỗi bài tính một lần/ngày</p>
         </div>
 
         <div
@@ -72,8 +72,8 @@ export function LearningStats({
           </div>
           <p className="stat-subtext">
             {currentStreak > 0
-              ? "Tuyệt vời! Tiếp tục duy trì phong độ"
-              : "Học hôm nay để bắt đầu chuỗi"}
+              ? "Học ít nhất một bài mỗi ngày để giữ chuỗi"
+              : "Học một bài hôm nay để bắt đầu chuỗi"}
           </p>
         </div>
 
