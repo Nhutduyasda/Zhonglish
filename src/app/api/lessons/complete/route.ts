@@ -115,6 +115,7 @@ export async function POST(request: Request) {
 
   // Server-side re-evaluation: never trust client score
   let correctCount = 0;
+  const mistakes: { exerciseId: string; vocabularyId?: string }[] = [];
   const totalExercises = lesson.exercises.length;
 
   for (const exercise of lesson.exercises) {
@@ -122,6 +123,9 @@ export async function POST(request: Request) {
     const result = evaluateExercise(exercise, userAnswer);
     if (result.isCorrect) {
       correctCount += 1;
+    } else {
+      const vocabularyId = "term" in exercise ? exercise.term?.id : undefined;
+      mistakes.push({ exerciseId: exercise.id, vocabularyId });
     }
   }
 
@@ -142,6 +146,8 @@ export async function POST(request: Request) {
   const { data: rpcResult, error: rpcError } = await supabase.rpc(
     "record_trusted_lesson_completion",
     {
+      p_user_id: user.id,
+      p_request_id: requestId,
       p_lesson_id: lesson.id,
       p_language: lesson.language,
       p_stage_id: lesson.stageId,
@@ -149,8 +155,7 @@ export async function POST(request: Request) {
       p_total_exercises: totalExercises,
       p_accuracy: accuracy,
       p_learning_minutes: lesson.estimatedMinutes,
-      p_user_id: user.id,
-      p_request_id: requestId,
+      p_mistakes: mistakes,
     }
   );
 
@@ -177,6 +182,7 @@ export async function POST(request: Request) {
     is_first_completion?: boolean;
     xp_awarded?: number;
     learning_minutes?: number;
+    mistakes_queued?: number;
   };
 
   let after;
@@ -197,5 +203,6 @@ export async function POST(request: Request) {
     accuracy,
     correctCount,
     totalExercises,
+    mistakesQueued: completionData?.mistakes_queued ?? mistakes.length,
   });
 }

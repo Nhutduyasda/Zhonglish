@@ -122,4 +122,5 @@ export type LessonCompletionResult = {
   accuracy: number;
   correctCount: number;
   totalExercises: number;
+  mistakesQueued: number;
 };

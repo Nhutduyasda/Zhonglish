@@ -10,6 +10,8 @@ import { ContinueLearningCard } from "@/components/learning/continue-learning-ca
 import { LearningStats } from "@/components/learning/learning-stats";
 import { CoursePath } from "@/components/learning/course-path";
 import { Achievements } from "@/components/learning/achievements";
+import { ReviewCard } from "@/components/learning/review-card";
+import { getReviewSummary } from "@/lib/supabase/review";
 
 export const dynamic = "force-dynamic";
 
@@ -44,7 +46,13 @@ export default async function LearningDashboardPage() {
   }
 
   // 1. Fetch real progress data from Supabase
-  const stats = await getDashboardLearningData(user.id);
+  const [stats, reviewSummary] = await Promise.all([
+    getDashboardLearningData(user.id),
+    getReviewSummary(user.id).catch((error) => {
+      console.error("Failed to load review summary:", error);
+      return { dueReviewCount: 0, weakItemCount: 0 };
+    }),
+  ]);
 
   // 2. Resolve the next lesson and stage progression
   const course = courses[profile.learning_language];
@@ -85,6 +93,8 @@ export default async function LearningDashboardPage() {
             nextLesson={nextLesson}
             hasAnyCompletion={hasAnyCompletion}
           />
+
+          <ReviewCard dueReviewCount={reviewSummary.dueReviewCount} />
 
           {/* Real Daily Goal, Streak & XP Stats */}
           <LearningStats

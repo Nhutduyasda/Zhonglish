@@ -29,10 +29,14 @@ Dashboard
 ```text
 Dashboard
 → Review
-→ Weak words
+→ Due exercise mistakes (maximum 5 by default, 10 supported)
 → Short review session
+→ Server-verified feedback after every answer
 → Result
+→ Dashboard
 ```
+
+Each submitted review answer is saved immediately. Exiting mid-session keeps answered items scheduled and leaves unanswered items due. An empty queue shows a friendly success state instead of a 404.
 
 ## Change language
 

@@ -66,7 +66,7 @@ RLS permits each authenticated user to select, insert and update only their own 
 - last_completed_at: timestamptz not null default `now()`
 - Unique constraint: `(user_id, lesson_id)`
 
-RLS: Authenticated users can only `SELECT` their own progress rows. Insertion/updates are managed through the atomic security definer function `record_lesson_completion`.
+RLS: Authenticated users can only `SELECT` their own progress rows.
 
 ## LearningActivity (Phase 4.1 implemented schema: `public.learning_activity`)
 - id: UUID primary key default `gen_random_uuid()`
@@ -76,9 +76,15 @@ RLS: Authenticated users can only `SELECT` their own progress rows. Insertion/up
 - xp_awarded: integer not null default 0 (+10 on first completion, 0 on replay)
 - completed_at: timestamptz not null default `now()`
 
-RLS: Authenticated users can only `SELECT` their own activity rows. Insertion is managed through `record_lesson_completion`.
+RLS: Authenticated users can only `SELECT` their own activity rows. Current insertion is managed through `record_trusted_lesson_completion`; `record_lesson_completion` is the historical Phase 4.1 path.
 
-## Atomic Function (Phase 4.1 implemented RPC)
+## Completion mutation architecture
+
+Historical Phase 4.1 used the authenticated RPC `record_lesson_completion`. That function remains in its applied migration history but is no longer the active application path after Phase 7.
+
+Current production architecture uses the server-only service-role client and `record_trusted_lesson_completion`. The route authenticates the caller, loads canonical content, evaluates answers, and passes only server-derived results. The RPC atomically records lesson completion, learning activity, and mistake review state, while `lesson_completion_requests` makes `request_id` retries idempotent. The service-role key is never exposed to the browser.
+
+## Historical Atomic Function (Phase 4.1 implemented RPC)
 - `public.record_lesson_completion(p_lesson_id text, p_language text, p_stage_id text, p_correct_count integer, p_total_exercises integer, p_accuracy integer, p_learning_minutes integer)`:
   - `SECURITY DEFINER`, `search_path = ''`
   - Validates authenticated user via `v_user_id := auth.uid()`
@@ -104,10 +110,13 @@ RLS: Authenticated users can only `SELECT` their own activity rows. Insertion is
 - audioUrl
 
 ## ReviewState
-- userId
-- vocabularyItemId
-- strength
-- nextReviewAt
+- private owner-scoped `public.review_state` keyed uniquely by user, lesson, and exercise;
+- canonical references: `source_lesson_id`, `source_exercise_id`, optional `vocabulary_id`;
+- scheduling: strength 0–3, repetitions, mistake/correct counts, and `next_review_at`;
+- due queue index: active `(user_id, next_review_at)`;
+- authenticated clients can select only their own rows and cannot mutate them directly.
+
+`public.review_activity` stores one trusted transition per `(user_id, request_id)`. `record_trusted_review_answer` applies the transition atomically and returns the saved result on retry. Review activity is intentionally separate from `learning_activity`.
 
 ## Phase 5.1 deployed; production E2E pending
 

@@ -167,7 +167,9 @@ export function LessonResult({
               <span>Điểm cần chú ý ôn lại:</span>
             </h3>
             <p className="result-review-hint">
-              Bạn có thể làm lại bài này để đạt kết quả tối đa 100%.
+              {saveStatus === "saved" && completionResult
+                ? `${completionResult.mistakesQueued} nội dung đã được thêm vào ôn tập.`
+                : "Các câu chưa đúng sẽ được thêm vào ôn tập sau khi lưu thành công."}
             </p>
           </div>
         )}

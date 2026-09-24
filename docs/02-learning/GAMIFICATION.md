@@ -10,8 +10,12 @@ It must not become the product itself.
 ### XP
 Earned from:
 - lesson completion;
-- review;
 - daily challenge.
+
+Current implementation:
+- lesson completion awards 10 XP once and 0 XP on replay;
+- Phase 7 review awards 0 XP and does not write lesson activity;
+- review XP is deferred until a capped, idempotent anti-farming rule is defined.
 
 ### Streak
 Increment when daily learning goal is satisfied.
