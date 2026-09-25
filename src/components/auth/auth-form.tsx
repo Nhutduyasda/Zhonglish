@@ -17,6 +17,8 @@ const copy = {
 
 function errorMessage(message: string) {
   const lower = message.toLowerCase();
+  if (lower.includes("rate limit") || lower.includes("over_email_send_rate_limit")) return "Hệ thống đã vượt giới hạn gửi email xác nhận. Vui lòng thử lại sau; nếu lỗi tiếp diễn, hãy liên hệ quản trị viên.";
+  if (lower.includes("email not confirmed")) return "Email chưa được xác nhận. Hãy mở thư xác nhận trước khi đăng nhập.";
   if (lower.includes("invalid login")) return "Email hoặc mật khẩu chưa đúng. Hãy kiểm tra lại nhé.";
   if (lower.includes("weak") || lower.includes("password")) return "Mật khẩu cần ít nhất 8 ký tự và đủ mạnh.";
   if (lower.includes("already registered") || lower.includes("already exists")) return "Email này đã có tài khoản. Hãy đăng nhập nhé.";
